@@ -1,5 +1,4 @@
-#include "sjf.h"
-#include "sjf.cpp"
+#include "ui.cpp"
 
 int tg;
 bool cmp_burstTime (Process P1, Process P2) {
@@ -12,7 +11,7 @@ bool cmp_arrivalTime (Process P1, Process P2) {
 
 void out(vector<Process> P) {
     int sum = 0;
-    cout << setw(20) << "Id" << setw(20) << "ArrivalTime" << setw(20) << "BurstTime" << setw(20) << "WaitingTime" << setw(20) << "TurnaroundTime" << setw(10) << "CompleteTime" << endl;
+    cout << "Id\tArrivalTime\tBurstTime\tWaitingTime\tTurnaroundTime\tCompleteTime" << endl;
     for (Process p: P) {
         cout << "P" << p.id << '\t' << p.arrivalTime << '\t' << p.burstTime2 << '\t' << p.waitingTime << '\t' << p.turnaroundTime << "\t" << p.completeTime << endl;
         sum += p.waitingTime;
@@ -91,22 +90,11 @@ void sjf_option(vector<Process> P, bool option) {
     
 }
 
-main() {
-    int n;
-    cout << "Nhap so tien trinh: "; cin >> n;
-    vector<Process> P;
-
-    // input
-    for (int i=0;i<n;i++) {
-        int a, b;
-        cout << "Input P" << i+1 << endl;
-        cout << "Nhap arrivalTime: "; cin >> a;
-        cout << "Nhap burstTime: "; cin >> b;
-        cout << endl;
-        P.push_back(Process(i+1, a, b));   
-    }
-
-    sjf_option(P, false);
+int main() {
+    int k = options();
+    if (k == -1)
+        return 0;
+    sjf_option(nhapui(), k);
     
 
 }
