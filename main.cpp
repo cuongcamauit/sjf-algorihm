@@ -82,10 +82,14 @@ void sjf_option(vector<Process> P, bool option) {
     out(P);
 
     for (int i: Process::stt) {
-       cout << i << "(" << P[i-1].start[0] << "," << P[i-1].end[0] << ")"<< " "; 
-       P[i-1].start.erase(P[i-1].start.begin());
-       P[i-1].end.erase(P[i-1].end.begin());
+        taokhung(P[i-1].start[0]*3, 15, (P[i-1].end[0]-P[i-1].start[0])*3, 2);
+        xuat(P[i-1].start[0]*3+1, 16, "P"+to_string(i));
+        
+        // cout << i << "(" << P[i-1].start[0] << "," << P[i-1].end[0] << ")"<< " "; 
+        P[i-1].start.erase(P[i-1].start.begin());
+        P[i-1].end.erase(P[i-1].end.begin());
     }
+    gotoXY(0, 44);
         
     
 }

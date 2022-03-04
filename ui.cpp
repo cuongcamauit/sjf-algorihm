@@ -18,8 +18,7 @@ void thanh_sang(int x,int y,int w,int h,int b_color,string nd)
 	gotoXY(x + 1, y + 1);
 	cout << nd;
 }
-void taokhung(int x, int y, int w, int h) {
-    int t = 1;
+void taokhung(int x, int y, int w, int h, int t=0) {
     textcolor(10);
     gotoXY(x, y);cout << char(218);
     Sleep(t);
@@ -64,7 +63,7 @@ void xuat(int x, int y, string s) {
 }
 int options() {
     system("cls");
-    taokhung(20, 10, 100, 15);
+    taokhung(20, 10, 100, 15, 1);
     taokhung(40, 12, 60, 2);
     taokhung(40, 15, 60, 2);
     taokhung(40, 18, 60, 2);
@@ -154,7 +153,7 @@ int options() {
 vector<Process> nhapui() {
     vector<Process> P;
     system("cls");
-    taokhung(50, 10, 50, 15);
+    taokhung(50, 10, 50, 15, 1);
     taokhung(60, 12, 30, 2);
     xuat(65, 13, "Nhap so tien trinh: ");
     int n;
