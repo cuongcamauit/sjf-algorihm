@@ -19,25 +19,44 @@ void thanh_sang(int x,int y,int w,int h,int b_color,string nd)
 	cout << nd;
 }
 void taokhung(int x, int y, int w, int h) {
+    int t = 1;
     textcolor(10);
-    
+    gotoXY(x, y);cout << char(218);
+    Sleep(t);
     for (int i=1;i<w;i++) {
         gotoXY(x+i, y);
         cout << char(196);
-        gotoXY(x+i, y+h);
-        cout << char(196);
+        Sleep(t);
     }
 
+    gotoXY(x + w, y);cout << char(191);
+    Sleep(t);
     for (int i=1;i<h;i++) {
         gotoXY(x+w, y+i);
         cout << char(179);
-        gotoXY(x, y+i);
-        cout << char(179);
+        Sleep(t);
     }
-    gotoXY(x, y);cout << char(218);
-	gotoXY(x + w, y);cout << char(191);
-	gotoXY(x, y + h);cout << char(192);
-	gotoXY(x + w, y + h);cout << char(217);    
+
+    gotoXY(x + w, y + h);cout << char(217); 
+    
+    Sleep(t);
+    for (int i=1;i<w;i++) {
+        gotoXY(x+(w-i), y+h);
+        cout << char(196);
+        Sleep(t);
+    }
+
+    gotoXY(x, y + h);cout << char(192);
+    Sleep(t);
+    for (int i=1;i<h;i++) {
+        gotoXY(x, y+(h-i));
+        cout << char(179);
+        Sleep(t);
+    }
+    
+	
+	
+	   
 }
 void xuat(int x, int y, string s) {
     gotoXY(x, y);
