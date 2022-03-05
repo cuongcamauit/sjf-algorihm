@@ -57,13 +57,14 @@ void taokhung(int x, int y, int w, int h, int t=0) {
 	
 	   
 }
-void xuat(int x, int y, string s) {
+void xuat(int x, int y, string s, int color=7) {
+    textcolor(color);
     gotoXY(x, y);
     cout << s;
 }
 int options() {
     system("cls");
-    taokhung(20, 10, 100, 15);
+    taokhung(20, 10, 100, 15, 1);
     taokhung(40, 12, 60, 2);
     taokhung(40, 15, 60, 2);
     taokhung(40, 18, 60, 2);
@@ -154,7 +155,7 @@ vector<Process> nhapui() {
     vector<Process> P;
     Process::stt.clear();
     system("cls");
-    taokhung(50, 10, 50, 15);
+    taokhung(50, 10, 50, 15, 1);
     taokhung(60, 12, 30, 2);
     xuat(65, 13, "Nhap so tien trinh: ");
     int n;
@@ -182,6 +183,7 @@ vector<Process> nhapui() {
     return P;
 }
 void table(vector<Process> P, int x=10, int y=2) {
+    xuat(x+11, y-1, "Sorted by Arrival Time");
     taokhung(x, y, 10, 2);
     xuat(x+1, y+1, "Name");
     taokhung(x+10, y, 15, 2);
@@ -194,6 +196,7 @@ void table(vector<Process> P, int x=10, int y=2) {
         xuat(x+11, y+i+3, to_string(P[i].arrivalTime));
         xuat(x+26, y+i+3, to_string(P[i].burstTime2));
     }
+    textcolor(10);
     gotoXY(x, y+2);
     cout << char(195);
     gotoXY(x+40, y+2);
@@ -210,28 +213,94 @@ void table(vector<Process> P, int x=10, int y=2) {
 
 
 void gantt(vector<Process> P, int x=0, int y=0) {
+    xuat(x, y-1, "Gannt chart");
     int t = -1;
     for (int i: Process::stt) {
         taokhung(P[i-1].start[0]*3+x, y, (P[i-1].end[0]-P[i-1].start[0])*3, 2);
         xuat(x, y+3, "0");
-        xuat(P[i-1].start[0]*3+1+x, y+1, "P"+to_string(i));
+        xuat(P[i-1].start[0]*3+1+x, y+1, "P"+to_string(i), P[i].id+1);
         xuat(P[i-1].start[0]*3+x, y+3, to_string(P[i-1].start[0]));
         xuat(P[i-1].end[0]*3+x, y+3, to_string(P[i-1].end[0]));
         //cout << i << "(" << P[i-1].start[0] << "," << P[i-1].end[0] << ")"<< " "; 
         
         if (t == P[i-1].start[0]) {
+            textcolor(10);
             gotoXY(x+t*3, y);
             cout << char(194);
             gotoXY(x+t*3, y+2);
             cout << char(193);
         }
-
         t = P[i-1].end[0];
-
-
         P[i-1].start.erase(P[i-1].start.begin());
         P[i-1].end.erase(P[i-1].end.begin());
     }
+
+}
+
+void tablefull(vector<Process> P, int x=10, int y=2) {
+    xuat(x+33, y-1, "Sorted by Complete Time");
+    taokhung(x, y, 10, 2);
+    xuat(x+1, y+1, "Name");
+
+    taokhung(x+10, y, 15, 2);
+    xuat(x+11, y+1, "Arrival Time");
+
+    taokhung(x+25, y, 15, 2);
+    xuat(x+26, y+1, "Burst Time");
+
+    taokhung(x+40, y, 15, 2);
+    xuat(x+41, y+1, "Waiting Time");
+
+    taokhung(x+55, y, 20, 2);
+    xuat(x+56, y+1, "Turnarround Time");
+
+    taokhung(x+75, y, 15, 2);
+    xuat(x+76, y+1, "Complete Time");
+
+    taokhung(x, y+2, 90, P.size()+1);
+
+    gotoXY(x, y+2);
+    cout << char(195);
+    gotoXY(x+90, y+2);
+    cout << char(180);
+
+    gotoXY(x+10, y);
+    cout << char(194);
+    gotoXY(x+25, y);
+    cout << char(194);
+    gotoXY(x+40, y);
+    cout << char(194);
+    gotoXY(x+55, y);
+    cout << char(194);
+    gotoXY(x+75, y);
+    cout << char(194);
+
+    gotoXY(x+10, y+2);
+    cout << char(193);
+    gotoXY(x+25, y+2);
+    cout << char(193);
+    gotoXY(x+40, y+2);
+    cout << char(193);
+    gotoXY(x+55, y+2);
+    cout << char(193);
+    gotoXY(x+75, y+2);
+    cout << char(193);
+
+    int sum = 0;
+    for (int i=0;i<P.size();i++) {
+        sum += P[i].waitingTime;
+        xuat(x+1, y+i+3, "P"+to_string(P[i].id));
+        xuat(x+11, y+i+3, to_string(P[i].arrivalTime));
+        xuat(x+26, y+i+3, to_string(P[i].burstTime2));
+        xuat(x+41, y+i+3, to_string(P[i].waitingTime));
+        xuat(x+56, y+i+3, to_string(P[i].turnaroundTime));
+        xuat(x+76, y+i+3, to_string(P[i].completeTime));
+    }
+
+    xuat(1, P.size()+y+12, "Sum waiting time: "+to_string(sum));
+    xuat(1, P.size()+y+13, "Average waiting time: "+to_string(sum/P.size()));
+
+
 }
 // int main() {
 //     int k = options();

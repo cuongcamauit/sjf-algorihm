@@ -1,25 +1,13 @@
 #include "ui.cpp"
 
 int tg;
-bool cmp_burstTime (Process P1, Process P2) {
-    return P1.burstTime < P2.burstTime;
+bool cmp_completeTime (Process P1, Process P2) {
+    return P1.completeTime < P2.completeTime;
 }
 
 bool cmp_arrivalTime (Process P1, Process P2) {
     return P1.arrivalTime < P2.arrivalTime;
 }
-
-void out(vector<Process> P) {
-    int sum = 0;
-    cout << "Id\tArrivalTime\tBurstTime\tWaitingTime\tTurnaroundTime\tCompleteTime" << endl;
-    for (Process p: P) {
-        cout << "P" << p.id << '\t' << p.arrivalTime << '\t' << p.burstTime2 << '\t' << p.waitingTime << '\t' << p.turnaroundTime << "\t" << p.completeTime << endl;
-        sum += p.waitingTime;
-    }
-    cout << "Sum waiting time: " << sum << endl;
-    cout << "Average waiting time: " << sum / P.size() << endl;
-}
-
 
 int minvaliable(vector<Process> P, bool a[]) {
     int min = 999999999;
@@ -33,6 +21,7 @@ int minvaliable(vector<Process> P, bool a[]) {
 }
 
 void sjf_option(vector<Process> P, bool option) {
+    int x = 50, y = 2;
     // option -> preemptive
     tg = 0;
     sort(P.begin(), P.end(), cmp_arrivalTime);
@@ -40,15 +29,15 @@ void sjf_option(vector<Process> P, bool option) {
     bool a[num_Pro];
     for (int i=0;i<num_Pro;i++)
         a[i] = true;
-    
-    table(P, 30, 5);
+    textcolor(5);
+    table(P, x, y);
     while (num_Pro) {
         int k = minvaliable(P, a);
         if (k!=-1) {
+            // per second or per process
             int step = P[k].burstTime;
             if (option)
                 step = 1;
-            
             P[k].burstTime -= step;
             if (P[k].burstTime ==0) {
                 num_Pro --;
@@ -69,8 +58,9 @@ void sjf_option(vector<Process> P, bool option) {
         }
         tg ++;
     }
-    // out(P);
-    gantt(P, 1, 1);
+    gantt(P, 1, P.size()*2+y+12);
+    sort(P.begin(), P.end(), cmp_completeTime);
+    tablefull(P, x-25, P.size()+6+y);
     gotoXY(0, 44);  
 }
 
@@ -82,5 +72,4 @@ int main() {
         k = options();
     }
     
-
 }
