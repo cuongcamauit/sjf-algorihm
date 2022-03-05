@@ -40,65 +40,47 @@ void sjf_option(vector<Process> P, bool option) {
     bool a[num_Pro];
     for (int i=0;i<num_Pro;i++)
         a[i] = true;
-    for (Process p: P) {
-        cout << p.id << '\t' << p.arrivalTime << "\t" << p.burstTime2 << endl;
-    }
+    
+    table(P, 30, 5);
     while (num_Pro) {
         int k = minvaliable(P, a);
         if (k!=-1) {
-            if (option) {
-                // excute per second
-                P[k].burstTime -= 1;
-                if (P[k].burstTime == 0) {
-                    num_Pro --;
-                    a[k] = false;
-                    P[k].completeTime = tg+1;
-                    P[k].turnaroundTime = P[k].completeTime - P[k].arrivalTime;
-                    P[k].waitingTime = P[k].turnaroundTime - P[k].burstTime2; 
-                }
-                if (P[k].start.size() == 0 || P[k].end[P[k].end.size()-1] != tg) {
-                    P[k].start.push_back(tg);
-                    P[k].end.push_back(tg+1);
-                    Process::stt.push_back(P[k].id);
-                } else {
+            int step = P[k].burstTime;
+            if (option)
+                step = 1;
+            
+            P[k].burstTime -= step;
+            if (P[k].burstTime ==0) {
+                num_Pro --;
+                a[k] = false;
+                P[k].completeTime = tg + step;
+                P[k].turnaroundTime = P[k].completeTime - P[k].arrivalTime;
+                P[k].waitingTime = P[k].turnaroundTime - P[k].burstTime2;
+            }
+            if (P[k].start.size() == 0 || P[k].end[P[k].end.size()-1] != tg) {
+                P[k].start.push_back(tg);
+                P[k].end.push_back(tg+step);
+                Process::stt.push_back(P[k].id);
+            } else {
                     P[k].end[P[k].end.size()-1] += 1;
                 }
 
-            } else {
-                // excute per process
-                num_Pro --;
-                a[k] = false;
-                P[k].completeTime = tg+P[k].burstTime2;
-                P[k].turnaroundTime = P[k].completeTime - P[k].arrivalTime;
-                P[k].waitingTime = P[k].turnaroundTime - P[k].burstTime2;
-                P[k].start.push_back(tg);
-                P[k].end.push_back(tg+P[k].burstTime2);
-                tg += P[k].burstTime2-1;    
-                Process::stt.push_back(P[k].id);            
-            }
+            tg += step-1;
         }
         tg ++;
     }
-    out(P);
-
-    for (int i: Process::stt) {
-        taokhung(P[i-1].start[0]*3, 15, (P[i-1].end[0]-P[i-1].start[0])*3, 2);
-        xuat(P[i-1].start[0]*3+1, 16, "P"+to_string(i));
-        
-        // cout << i << "(" << P[i-1].start[0] << "," << P[i-1].end[0] << ")"<< " "; 
-        P[i-1].start.erase(P[i-1].start.begin());
-        P[i-1].end.erase(P[i-1].end.begin());
-    }
-    gotoXY(0, 44);
-        
-    
+    // out(P);
+    gantt(P, 1, 1);
+    gotoXY(0, 44);  
 }
 
 int main() {
     int k = options();
-    if (k == -1)
-        return 0;
-    sjf_option(nhapui(), k);
+    while (k!=-1) {
+        sjf_option(nhapui(), k);
+        getch();
+        k = options();
+    }
     
 
 }

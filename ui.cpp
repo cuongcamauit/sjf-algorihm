@@ -63,7 +63,7 @@ void xuat(int x, int y, string s) {
 }
 int options() {
     system("cls");
-    taokhung(20, 10, 100, 15, 1);
+    taokhung(20, 10, 100, 15);
     taokhung(40, 12, 60, 2);
     taokhung(40, 15, 60, 2);
     taokhung(40, 18, 60, 2);
@@ -152,8 +152,9 @@ int options() {
 }
 vector<Process> nhapui() {
     vector<Process> P;
+    Process::stt.clear();
     system("cls");
-    taokhung(50, 10, 50, 15, 1);
+    taokhung(50, 10, 50, 15);
     taokhung(60, 12, 30, 2);
     xuat(65, 13, "Nhap so tien trinh: ");
     int n;
@@ -180,7 +181,58 @@ vector<Process> nhapui() {
     system("cls");
     return P;
 }
+void table(vector<Process> P, int x=10, int y=2) {
+    taokhung(x, y, 10, 2);
+    xuat(x+1, y+1, "Name");
+    taokhung(x+10, y, 15, 2);
+    xuat(x+11, y+1, "Arrival Time");
+    taokhung(x+25, y, 15, 2);
+    xuat(x+26, y+1, "Burst Time");
+    taokhung(x, y+2, 40, P.size()+1);
+    for (int i=0;i<P.size();i++) {
+        xuat(x+1, y+i+3, "P"+to_string(P[i].id));
+        xuat(x+11, y+i+3, to_string(P[i].arrivalTime));
+        xuat(x+26, y+i+3, to_string(P[i].burstTime2));
+    }
+    gotoXY(x, y+2);
+    cout << char(195);
+    gotoXY(x+40, y+2);
+    cout << char(180);
+    gotoXY(x+10, y);
+    cout << char(194);
+    gotoXY(x+25, y);
+    cout << char(194);
+    gotoXY(x+10, y+2);
+    cout << char(193);
+    gotoXY(x+25, y+2);
+    cout << char(193);
+}
 
+
+void gantt(vector<Process> P, int x=0, int y=0) {
+    int t = -1;
+    for (int i: Process::stt) {
+        taokhung(P[i-1].start[0]*3+x, y, (P[i-1].end[0]-P[i-1].start[0])*3, 2);
+        xuat(x, y+3, "0");
+        xuat(P[i-1].start[0]*3+1+x, y+1, "P"+to_string(i));
+        xuat(P[i-1].start[0]*3+x, y+3, to_string(P[i-1].start[0]));
+        xuat(P[i-1].end[0]*3+x, y+3, to_string(P[i-1].end[0]));
+        //cout << i << "(" << P[i-1].start[0] << "," << P[i-1].end[0] << ")"<< " "; 
+        
+        if (t == P[i-1].start[0]) {
+            gotoXY(x+t*3, y);
+            cout << char(194);
+            gotoXY(x+t*3, y+2);
+            cout << char(193);
+        }
+
+        t = P[i-1].end[0];
+
+
+        P[i-1].start.erase(P[i-1].start.begin());
+        P[i-1].end.erase(P[i-1].end.begin());
+    }
+}
 // int main() {
 //     int k = options();
 //     if (k == -1)
