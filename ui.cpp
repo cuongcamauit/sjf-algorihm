@@ -62,24 +62,24 @@ void xuat(int x, int y, string s, int color=7) {
     gotoXY(x, y);
     cout << s;
 }
-int options() {
+int options(int x=18, int y=5) {
     system("cls");
-    taokhung(20, 10, 100, 15, 1);
-    taokhung(40, 12, 60, 2);
-    taokhung(40, 15, 60, 2);
-    taokhung(40, 18, 60, 2);
-    taokhung(40, 21, 60, 2);
+    taokhung(x, y, 80, 15, 1);
+    taokhung(x+10, y+2, 60, 2);
+    taokhung(x+10, y+5, 60, 2);
+    taokhung(x+10, y+8, 60, 2);
+    taokhung(x+10, y+11, 60, 2);
 
-    gotoXY(66, 13);
+    gotoXY(x+36, y+3);
     cout << "Option!";
-    gotoXY(56, 16);
+    gotoXY(x+26, y+6);
     cout << "Nonpreemptive SJF scheduling";
-    gotoXY(57, 19);
+    gotoXY(x+27, y+9);
     cout << "Preemptive SJF scheduling";
-    gotoXY(68, 22);
+    gotoXY(x+38, y+12);
     cout << "Exit";
 
-    int xp = 40;int yp = 15;//tọa độ thanh sáng
+    int xp = x+10;int yp = y+5;//tọa độ thanh sáng
 	int xcu = xp;int ycu = yp;
 	bool kt = true;
 	while (true)
@@ -88,22 +88,22 @@ int options() {
 		if (kt == true)
 		{
             string nd;
-            if (ycu == 15)
+            if (ycu == y+5)
                 nd = "                Nonpreemptive SJF scheduling";
-            else if (ycu == 18)
+            else if (ycu == y+8)
                 nd = "                 Preemptive SJF scheduling";
-            else if (ycu == 21) 
+            else if (ycu == y+11) 
                 nd = "                            Exit";
 			//----- back space ----
 			gotoXY(xcu, ycu);
 			thanh_sang(xcu, ycu, 60, 2, 1, nd);//rs thanh sang cu
             // gotoXY(xcu+1, ycu+1);
 			xcu = xp;ycu = yp;
-            if (yp == 15)
+            if (yp == y+5)
                 nd = "                Nonpreemptive SJF scheduling";
-            else if (yp == 18)
+            else if (yp == y+8)
                 nd = "                 Preemptive SJF scheduling";
-            else if (yp == 21) 
+            else if (yp == y+11) 
                 nd = "                            Exit";
 			//-------------
 			thanh_sang(xp, yp, 60, 2, 75, nd);
@@ -121,18 +121,18 @@ int options() {
                 cout << c;
 				if (c == 72)
 				{
-					if(yp != 15) yp -= 3;
+					if(yp != y+5) yp -= 3;
 					else
 					{
-						yp = 21;
+						yp = y+11;
 					}
 				}
 				else if (c == 80 )
 				{
-					if(yp != 21)yp += 3;
+					if(yp != y+11)yp += 3;
 					else
 					{
-						yp = 15;
+						yp = y+5;
 					}
                     
 				} 
@@ -145,35 +145,35 @@ int options() {
     textcolor(1);
     SetColor(7);
     system("cls");
-    if (yp == 21)
+    if (yp == y+11)
         return -1;
-    else if (yp == 18) 
+    else if (yp == y+8) 
         return 1;
     else return 0; 
 }
-vector<Process> nhapui() {
+vector<Process> nhapui(int x=30, int y=5) {
     vector<Process> P;
     Process::stt.clear();
     system("cls");
-    taokhung(50, 10, 50, 15, 1);
-    taokhung(60, 12, 30, 2);
-    xuat(65, 13, "Nhap so tien trinh: ");
+    taokhung(x, y, 50, 15, 1);
+    taokhung(x+10, y+2, 30, 2);
+    xuat(x+15, y+3, "Nhap so tien trinh: ");
     int n;
-    gotoXY(85, 13);
+    gotoXY(x+35, y+3);
     cin >> n;
     for (int i=0;i<n;i++) {
-        for (int j=11;j<25;j++) 
-            xuat(51, j, "                                             ");
+        for (int j=y+1;j<y+15;j++) 
+            xuat(x+1, j, "                                             ");
         int a, b;
-        taokhung(60, 12, 30, 2);
-        xuat(68, 13, "Nhap tien trinh " + to_string(i+1));
-        taokhung(55, 15, 40, 2);
-        xuat(60, 15, "Nhap arrival time"); 
-        gotoXY(61, 16);
+        taokhung(x+10, y+2, 30, 2);
+        xuat(x+18, y+3, "Nhap tien trinh " + to_string(i+1));
+        taokhung(x+5, y+5, 40, 2);
+        xuat(x+10, y+5, "Nhap arrival time"); 
+        gotoXY(x+11, y+6);
         cin >> a;
-        taokhung(55, 18, 40, 2);
-        xuat(60, 18, "Nhap burst time");
-        gotoXY(61, 19);
+        taokhung(x+5, y+8, 40, 2);
+        xuat(x+10, y+8, "Nhap burst time");
+        gotoXY(x+11, y+9);
         cin >> b;
         P.push_back(Process(i+1, a, b));
     }
@@ -218,10 +218,11 @@ void gantt(vector<Process> P, int x=0, int y=0) {
     for (int i: Process::stt) {
         taokhung(P[i-1].start[0]*3+x, y, (P[i-1].end[0]-P[i-1].start[0])*3, 2);
         xuat(x, y+3, "0");
-        xuat(P[i-1].start[0]*3+1+x, y+1, "P"+to_string(i), P[i].id+1);
+        xuat(P[i-1].start[0]*3+1+x, y+1, "P"+to_string(i), P[i-1].id);
         xuat(P[i-1].start[0]*3+x, y+3, to_string(P[i-1].start[0]));
         xuat(P[i-1].end[0]*3+x, y+3, to_string(P[i-1].end[0]));
         //cout << i << "(" << P[i-1].start[0] << "," << P[i-1].end[0] << ")"<< " "; 
+        
         
         if (t == P[i-1].start[0]) {
             textcolor(10);
@@ -234,7 +235,6 @@ void gantt(vector<Process> P, int x=0, int y=0) {
         P[i-1].start.erase(P[i-1].start.begin());
         P[i-1].end.erase(P[i-1].end.begin());
     }
-
 }
 
 void tablefull(vector<Process> P, int x=10, int y=2) {

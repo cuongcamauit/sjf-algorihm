@@ -1,6 +1,9 @@
+#include "mylib.h"
 #include <iostream>
 using namespace std;
 main() {
-    int t = (1, 2)[0];
-    cout << t;
+    for (int i=0;i<200;i++) {
+        textcolor(i);
+        cout << i;
+    }
 }

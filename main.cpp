@@ -1,14 +1,21 @@
 #include "ui.cpp"
 
 int tg;
+// function sorted by complete time
 bool cmp_completeTime (Process P1, Process P2) {
     return P1.completeTime < P2.completeTime;
 }
 
+// function sorted by arrival time
 bool cmp_arrivalTime (Process P1, Process P2) {
     return P1.arrivalTime < P2.arrivalTime;
 }
 
+bool cmp_id(Process P1, Process P2) {
+    return P1.id < P2.id;
+}
+
+// find process, which have minimum burst time in time tg-th
 int minvaliable(vector<Process> P, bool a[]) {
     int min = 999999999;
     int index = -1;
@@ -20,6 +27,7 @@ int minvaliable(vector<Process> P, bool a[]) {
     return index;
 }
 
+// function sjf
 void sjf_option(vector<Process> P, bool option) {
     int x = 50, y = 2;
     // option -> preemptive
@@ -58,10 +66,12 @@ void sjf_option(vector<Process> P, bool option) {
         }
         tg ++;
     }
-    gantt(P, 1, P.size()*2+y+12);
+    
     sort(P.begin(), P.end(), cmp_completeTime);
     tablefull(P, x-25, P.size()+6+y);
-    gotoXY(0, 44);  
+    sort(P.begin(), P.end(), cmp_id);
+    gantt(P, 1, P.size()*2+y+12);
+    gotoXY(0, P.size()+P.size()+6+y+14);  
 }
 
 int main() {
