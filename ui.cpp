@@ -300,6 +300,9 @@ void tablefull(vector<Process> P, int x=10, int y=2) {
     xuat(1, P.size()+y+12, "Sum waiting time: "+to_string(sum));
     xuat(1, P.size()+y+13, "Average waiting time: "+to_string(sum/P.size()));
 
+    gotoXY(1, P.size()+y+13);
+    cout << "Average waiting time: " << setprecision(2) << float(sum)/P.size();
+
 
 }
 // int main() {
